@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Resources\Product as ProductResource;
+use App\Http\Resources\SimpleProduct as ProductResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ProductCollection extends ResourceCollection
@@ -15,18 +15,18 @@ class ProductCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        $test = '';
+        $min = $this->collection->min('price');
         return [
             'data' => [
                 'count' => $this->collection->count(),
-                'min' => $this->collection->min('price'),
+                'min' => $min,
                 'max' => $this->collection->max('price'),
-                'products' => $this->collection->map(function ($item, $key) {
+                'products' => $this->collection->map(function ($item) {
                     return new ProductResource($item);
                 }),
-                'lowCostProduct' => [
-                    // здесь инфа по самому дешёвому товару
-                ]
+                'lowCostProduct' => new ProductResource($this->collection->first(function ($item) use ($min) {
+                    return $item->price === $min;
+                })),
             ],
             'code' => 200
         ];

@@ -17,24 +17,25 @@ use App\Http\Resources\ProductCollection;
  * @property string|null ext_category
  * @property array seller
  * @property-read mixed $id
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Product newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Product newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Product query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Product whereFullText($search)
+ * @property mixed message_id
+ * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereFullText($search)
  * @mixin \Eloquent
  */
 class Product extends BaseModel
 {
     protected $collection = 'products_collection';
 
+    private const BASE_URL = 'http://kdvor3mkad.ru';
+    private const PRODUCT_URL = 'tovar_${product}.html';
+
     public function scopeWhereFullText($query, $search)
     {
         $query->getQuery()->projections = ['score' => ['$meta' => 'textScore']];
-
         return $query->whereRaw(['$text' => ['$search' => $search]]);
-
     }
-
 
     public static function findCost($name)
     {
@@ -50,7 +51,37 @@ class Product extends BaseModel
             return new ProductResource($products[0]);
         }
 
-        return ProductCollection::collection($products);
+        return new ProductCollection($products);
+    }
 
+    public static function findLowCost($name)
+    {
+        $products = self::whereFullText($name)
+            ->orderBy('price', 'asc')
+            ->first();
+
+        if ($products === null) {
+            return ['data' => 'Товар не найден, попробуйте другой запрос', 'code' => 404];
+        }
+
+        return new ProductResource($products);
+    }
+
+    public static function findHighCost($name)
+    {
+        $products = self::whereFullText($name)
+            ->orderBy('price', 'desc')
+            ->first();
+
+        if ($products === null) {
+            return ['data' => 'Товар не найден, попробуйте другой запрос', 'code' => 404];
+        }
+
+        return new ProductResource($products);
+    }
+
+    public function getLink()
+    {
+        return self::BASE_URL . $this->seller['url'] . str_replace('${product}', $this->message_id, self::PRODUCT_URL);
     }
 }

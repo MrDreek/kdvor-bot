@@ -14,7 +14,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed ext_category
  * @property mixed seller
  */
-class Product extends JsonResource
+class SimpleProduct extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -25,17 +25,13 @@ class Product extends JsonResource
     public function toArray($request)
     {
         return [
-            'data' => [
-                'name' => $this->name ?? null,
-                'desc' => $this->desc ?? null,
-                'detail' => $this->detail ?? null,
-                'price' => $this->price ?? null,
-                'main_category' => $this->main_category ?? null,
-                'ext_category' => $this->ext_category ?? null,
-                'seller' => $this->seller ?? null,
-                'link' => $this->getLink()
-            ],
-            'code' => 200
+            'name' => $this->name ?? null,
+            'desc' => $this->desc ?? null,
+            'detail' => $this->detail ?? null,
+            'price' => $this->price ?? null,
+            'main_category' => $this->main_category ?? null,
+            'ext_category' => $this->ext_category ?? null,
+            'seller' => $this->seller ?? null
         ];
     }
 }
