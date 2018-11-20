@@ -32,9 +32,13 @@ class ImportController extends Controller
                 'email' => $sellers[$product['Subdivision_ID']]['email'],
                 'url' => $sellers[$product['Subdivision_ID']]['Hidden_URL'],
             ];
-            $item->save();
+            try {
+                $item->save();
+            } catch (\Exception $e) {
+                return ['message' => 'Ошибка сохранения!', 'code' => 500, 'inner_message' => $e->getMessage()];
+            }
         }
 
-        $test = '';
+        return ['message' => 'OK!', 'code' => 200];
     }
 }
