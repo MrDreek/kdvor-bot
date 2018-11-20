@@ -13,3 +13,10 @@
 
 Route::get('import', 'ImportController@index')->name('import');
 
+Route::prefix('product')->group(function () {
+    Route::post('cost','ProductController@cost')->name('cost');
+    Route::post('cheapest','ProductController@cheapest')->name('cheapest');
+    Route::post('dearest','ProductController@dearest')->name('dearest');
+});
+
+

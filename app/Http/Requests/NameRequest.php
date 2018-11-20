@@ -27,15 +27,15 @@ class NameRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|exists:cities_collection,name'
+            'name' => 'required|string'
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'Требуется указать название города',
-            'name.exists' => 'Город не найден',
+            'name.required' => 'Требуется указать название товара',
+            'name.string' => 'Название товара должно быть строкой',
         ];
     }
 }

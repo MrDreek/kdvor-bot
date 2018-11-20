@@ -23,12 +23,13 @@ class ImportController extends Controller
             $item->detail = $product['Details'];
             $item->price = $product['Price'];
             $item->ext_offer_url = $product['ext_offer_url'];
-            $item->category = $categories[$product['ext_category_id']]['ext_category_name'];
+            $item->ext_category = $categories[$product['ext_category_id']]['ext_category_name'] ?? null;
+            $item->main_category = null;
             $item->seller = [
-                'seller_name' => $sellers[$products['Subdivision_ID']]['Subdivision_Name'],
-                'phone' => $sellers[$products['Subdivision_ID']]['phone'],
-                'email' => $sellers[$products['Subdivision_ID']]['email'],
-                'url' => $sellers[$products['Subdivision_ID']]['Hidden_URL'],
+                'seller_name' => $sellers[$product['Subdivision_ID']]['Subdivision_Name'],
+                'phone' => $sellers[$product['Subdivision_ID']]['phone'],
+                'email' => $sellers[$product['Subdivision_ID']]['email'],
+                'url' => $sellers[$product['Subdivision_ID']]['Hidden_URL'],
             ];
             $item->save();
         }
