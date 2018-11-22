@@ -41,6 +41,7 @@ class Product extends BaseModel
     {
         $products = self::whereFullText($name)
             ->orderBy('score', ['$meta' => 'textScore'])
+            ->limit(10)
             ->get();
 
         if ($products->count() === 0) {

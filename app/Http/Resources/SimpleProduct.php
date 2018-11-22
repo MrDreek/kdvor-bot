@@ -13,6 +13,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed main_category
  * @property mixed ext_category
  * @property mixed seller
+ * @property mixed score
  */
 class SimpleProduct extends JsonResource
 {
@@ -31,7 +32,8 @@ class SimpleProduct extends JsonResource
             'price' => $this->price ?? null,
             'main_category' => $this->main_category ?? null,
             'ext_category' => $this->ext_category ?? null,
-            'seller' => $this->seller ?? null
+            'seller' => $this->seller ?? null,
+            'weight' => $this->score
         ];
     }
 }
