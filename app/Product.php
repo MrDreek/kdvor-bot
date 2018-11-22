@@ -39,16 +39,18 @@ class Product extends BaseModel
 
     public static function findCost($name)
     {
-        $products = self::whereFullText($name)
+        $products = self::select(['name', 'desc', 'detail', 'price', 'main_category', 'ext_category', 'seller'])->whereFullText($name)
             ->orderBy('score', ['$meta' => 'textScore'])
             ->limit(10)
             ->get();
 
-        if ($products->count() === 0) {
+        $count = $products->count();
+
+        if ($count === 0) {
             return ['data' => 'Товар не найден, попробуйте другой запрос', 'code' => 404];
         }
 
-        if ($products->count() === 1) {
+        if ($count === 1) {
             return new ProductResource($products[0]);
         }
 

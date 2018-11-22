@@ -26,13 +26,13 @@ class SimpleProduct extends JsonResource
     public function toArray($request)
     {
         return [
-            'name' => $this->name ?? null,
-            'desc' => $this->desc ?? null,
-            'detail' => $this->detail ?? null,
-            'price' => $this->price ?? null,
-            'main_category' => $this->main_category ?? null,
-            'ext_category' => $this->ext_category ?? null,
-            'seller' => $this->seller ?? null,
+            'name' => $this->name,
+            'desc' => $this->desc,
+            'detail' => $this->detail,
+            'price' => $this->price,
+            'main_category' => $this->main_category,
+            'ext_category' => $this->ext_category,
+            'seller' => $this->seller,
             'weight' => $this->score
         ];
     }
