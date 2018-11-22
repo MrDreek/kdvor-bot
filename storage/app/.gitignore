@@ -1,6 +1,4 @@
 *
-!cities.json
-!directories.json
-!additional_cities.json
 !public/
+!dumps/
 !.gitignore
