@@ -6,6 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @property mixed name
+ * @property mixed per_page
+ * @property mixed page
  */
 class NameRequest extends FormRequest
 {
@@ -27,7 +29,9 @@ class NameRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string'
+            'name' => 'required|string',
+            'page' => 'integer',
+            'per_page' => 'integer',
         ];
     }
 

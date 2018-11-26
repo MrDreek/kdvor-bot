@@ -37,6 +37,7 @@ class Product extends JsonResource
                 'weight' => $this->weight,
                 'link' => $this->getLink()
             ],
+            'error' => false,
             'code' => 200
         ];
     }

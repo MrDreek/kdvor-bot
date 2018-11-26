@@ -15,12 +15,16 @@ class ProductCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        $min = $this->collection->min('price');
+        $count = $this['info']->count;
+        $min = $this['info']->min;
+        $max = $this['info']->max;
+        unset($this['count']);
         return [
             'data' => [
-                'count' => $this->collection->count(),
+//                'count' => $this->collection->count(),
+                'count' => $count,
                 'min' => $min,
-                'max' => $this->collection->max('price'),
+                'max' => $max,
                 'products' => $this->collection->map(function ($item) {
                     return new ProductResource($item);
                 }),
@@ -28,6 +32,7 @@ class ProductCollection extends ResourceCollection
                     return $item->price === $min;
                 })),
             ],
+            'error' => false,
             'code' => 200
         ];
     }
