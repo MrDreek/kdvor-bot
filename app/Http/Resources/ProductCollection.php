@@ -18,7 +18,7 @@ class ProductCollection extends ResourceCollection
         $count = $this['info']->count;
         $min = $this['info']->min;
         $max = $this['info']->max;
-        unset($this['count']);
+        unset($this['info']);
         return [
             'data' => [
 //                'count' => $this->collection->count(),
