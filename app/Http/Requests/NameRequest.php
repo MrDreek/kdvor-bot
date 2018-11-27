@@ -8,6 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property mixed name
  * @property mixed per_page
  * @property mixed page
+ * @property mixed sorted
  */
 class NameRequest extends FormRequest
 {
@@ -32,6 +33,7 @@ class NameRequest extends FormRequest
             'name' => 'required|string',
             'page' => 'integer',
             'per_page' => 'integer',
+            'sorted' => 'boolean',
         ];
     }
 
@@ -40,6 +42,9 @@ class NameRequest extends FormRequest
         return [
             'name.required' => 'Требуется указать название товара',
             'name.string' => 'Название товара должно быть строкой',
+            'page.integer' => 'Номер страницы должен быть числом',
+            'per_page.integer' => 'Количество элементов на страницу должно быть числом',
+            'sorted.boolean' => 'Наличие сортировки должно быть булевым значением',
         ];
     }
 }

@@ -40,15 +40,11 @@ class Product extends BaseModel
         return $query->whereRaw(['$text' => ['$search' => $search]]);
     }
 
-    public static function findCost($name, $page, $perPage)
+    public static function findCost($name, $page, $perPage, $sorted)
     {
         $products = self::select(['name', 'desc', 'detail', 'price', 'main_category', 'ext_category', 'seller'])
             ->whereFullText($name, $page ?? 1, $perPage ?? 5)
             ->get();
-
-//        $count = self::select(['_id', 'min(price)', 'max(price)'])
-//            ->whereFullTextWithOutPaginate($name)
-//            ->get();
 
         $count = self::raw(function ($collection) use ($name) {
             return $collection->aggregate([
@@ -88,6 +84,11 @@ class Product extends BaseModel
         }
 
         $products['info'] = $info;
+
+        if($sorted){
+            $products = $products->sortBy('price');
+//            $products = new LengthAwarePaginator($paginate, $info->count, $perPage ?? 5);
+        }
 
         return new ProductCollection($products);
     }

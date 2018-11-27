@@ -19,15 +19,17 @@ class ProductCollection extends ResourceCollection
         $min = $this['info']->min;
         $max = $this['info']->max;
         unset($this['info']);
+
+        $products = $this->collection->map(function ($item) {
+            return new ProductResource($item);
+        })->toArray();
+
         return [
             'data' => [
-//                'count' => $this->collection->count(),
                 'count' => $count,
                 'min' => $min,
                 'max' => $max,
-                'products' => $this->collection->map(function ($item) {
-                    return new ProductResource($item);
-                }),
+                'products' => $products,
                 'lowCostProduct' => new ProductResource($this->collection->first(function ($item) use ($min) {
                     return $item->price === $min;
                 })),
