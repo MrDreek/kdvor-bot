@@ -21,7 +21,7 @@ use App\Http\Resources\ProductCollection;
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereFullText($search)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereFullText($search, $sorted, $page = 1, $limit = 5)
  * @mixin \Eloquent
  */
 class Product extends BaseModel
@@ -31,19 +31,49 @@ class Product extends BaseModel
     private const BASE_URL = 'http://kdvor3mkad.ru';
     private const PRODUCT_URL = 'tovar_${product}.html';
 
-    public function scopeWhereFullText($query, $search, $page = 1, $limit = 5)
+    /**
+     * @param $query
+     * @param $search
+     * @param $sorted
+     * @param int $page
+     * @param int $limit
+     * @return mixed
+     */
+    public function scopeWhereFullText($query, $search, $sorted, $page = 1, $limit = 5)
     {
         $query->getQuery()->projections = ['score' => ['$meta' => 'textScore']];
-        $query->orderBy('score', ['$meta' => 'textScore'])->orderBy('price', 'asc');
+        if ($sorted) {
+            $query->orderBy('price', 'asc');
+        } elseif ($sorted !== null) {
+            $query->orderBy('price', 'desc');
+        }
+        $query->orderBy('score', ['$meta' => 'textScore']);
         $query->skip(($page - 1) * $limit);
         $query->take($limit);
         return $query->whereRaw(['$text' => ['$search' => $search]]);
     }
 
+    /**
+     * @param $query
+     * @param $search
+     * @return mixed
+     */
+    public function scopeWhereFullTextSorted($query, $search)
+    {
+        return $query->whereRaw(['$text' => ['$search' => $search]]);
+    }
+
+    /**
+     * @param $name
+     * @param $page
+     * @param $perPage
+     * @param $sorted
+     * @return ProductResource|ProductCollection|array
+     */
     public static function findCost($name, $page, $perPage, $sorted)
     {
         $products = self::select(['name', 'desc', 'detail', 'price', 'main_category', 'ext_category', 'seller'])
-            ->whereFullText($name, $page ?? 1, $perPage ?? 5)
+            ->whereFullText($name, $sorted, $page ?? 1, $perPage ?? 5)
             ->get();
 
         $count = self::raw(function ($collection) use ($name) {
@@ -92,9 +122,13 @@ class Product extends BaseModel
         return new ProductCollection($products);
     }
 
+    /**
+     * @param $name
+     * @return ProductResource|array
+     */
     public static function findLowCost($name)
     {
-        $products = self::whereFullText($name)
+        $products = self::whereFullTextSorted($name)
             ->orderBy('price', 'asc')
             ->first();
 
@@ -105,9 +139,13 @@ class Product extends BaseModel
         return new ProductResource($products);
     }
 
+    /**
+     * @param $name
+     * @return ProductResource|array
+     */
     public static function findHighCost($name)
     {
-        $products = self::whereFullText($name)
+        $products = self::whereFullTextSorted($name)
             ->orderBy('price', 'desc')
             ->first();
 
@@ -118,7 +156,10 @@ class Product extends BaseModel
         return new ProductResource($products);
     }
 
-    public function getLink()
+    /**
+     * @return string
+     */
+    public function getLink(): string
     {
         return self::BASE_URL . $this->seller['url'] . str_replace('${product}', $this->message_id, self::PRODUCT_URL);
     }
