@@ -75,7 +75,7 @@ class Product extends BaseModel
 
         $info = $count->first();
 
-        if ($info->count === 0) {
+        if ($info === null || $info->count === 0) {
             return ['data' => 'Товар не найден, попробуйте другой запрос', 'error' => true, 'code' => 404];
         }
 
@@ -85,9 +85,8 @@ class Product extends BaseModel
 
         $products['info'] = $info;
 
-        if($sorted){
+        if ($sorted) {
             $products = $products->sortBy('price');
-//            $products = new LengthAwarePaginator($paginate, $info->count, $perPage ?? 5);
         }
 
         return new ProductCollection($products);
