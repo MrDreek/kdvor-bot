@@ -14,6 +14,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed ext_category
  * @property mixed seller
  * @property mixed weight
+ * @property mixed score
  */
 class Product extends JsonResource
 {
@@ -23,7 +24,7 @@ class Product extends JsonResource
      * @param  \Illuminate\Http\Request $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'data' => [
@@ -34,7 +35,7 @@ class Product extends JsonResource
                 'main_category' => $this->main_category,
                 'ext_category' => $this->ext_category,
                 'seller' => $this->seller,
-                'weight' => $this->weight,
+                'weight' => $this->score,
                 'link' => $this->getLink()
             ],
             'error' => false,

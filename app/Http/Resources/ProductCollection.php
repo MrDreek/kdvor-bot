@@ -13,7 +13,7 @@ class ProductCollection extends ResourceCollection
      * @param  \Illuminate\Http\Request $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         $count = $this['info']->count;
         $min = $this['info']->min;
@@ -30,9 +30,6 @@ class ProductCollection extends ResourceCollection
                 'min' => $min,
                 'max' => $max,
                 'products' => $products,
-                'lowCostProduct' => new ProductResource($this->collection->first(function ($item) use ($min) {
-                    return $item->price === $min;
-                })),
             ],
             'error' => false,
             'code' => 200
