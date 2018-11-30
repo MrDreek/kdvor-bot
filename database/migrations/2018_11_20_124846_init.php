@@ -29,8 +29,8 @@ class Init extends Migration
                         'name' => 32,
                         'ext_category' => 16,
                         'main_category' => 16,
-                        'desc' => 10,
-                        'detail' => 8,
+                        //                        'desc' => 10,
+                        //                        'detail' => 8,
                     ],
                     'default_language' => 'russian',
                     'name' => 'recipe_full_text'
