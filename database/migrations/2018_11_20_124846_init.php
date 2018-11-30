@@ -27,7 +27,7 @@ class Init extends Migration
                 [
                     'weights' => [
                         'name' => 32,
-                        'ext_category' => 16,
+                        'ext_category' => 8,
                         'main_category' => 16,
                         //                        'desc' => 10,
                         //                        'detail' => 8,
