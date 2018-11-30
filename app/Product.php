@@ -39,7 +39,7 @@ class Product extends BaseModel
      * @param int $limit
      * @return mixed
      */
-    public function scopeWhereFullText($query, $search, $sorted, $page = 1, $limit = 5)
+    public function scopeWhereFullText($query, $search, $sorted, $page = 1, $limit = 4)
     {
         $query->getQuery()->projections = ['score' => ['$meta' => 'textScore']];
         if ($sorted) {
@@ -73,7 +73,7 @@ class Product extends BaseModel
     public static function findCost($name, $page, $perPage, $sorted)
     {
         $products = self::select(['name', 'desc', 'detail', 'price', 'main_category', 'ext_category', 'seller'])
-            ->whereFullText($name, $sorted, $page ?? 1, $perPage ?? 5)
+            ->whereFullText($name, $sorted, $page ?? 1, $perPage ?? 4)
             ->get();
 
         $count = self::raw(function ($collection) use ($name) {
