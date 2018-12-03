@@ -32,6 +32,7 @@ class SimpleProduct extends JsonResource
             'price' => $this->price,
             'main_category' => $this->main_category,
             'ext_category' => $this->ext_category,
+            'ext_offer_url' => $this->ext_offer_url,
             'seller' => $this->seller,
             'weight' => $this->score
         ];
