@@ -26,8 +26,8 @@ class ImportController extends Controller
             $item = new Product;
             $item->name = $product['Name'];
             $item->message_id = $product['Message_ID'];
-            $item->desc = $product['Description'];
-            $item->detail = $product['Details'];
+            $item->desc = str_replace(["\t", "\n"], '', $product['Description']);
+            $item->detail = str_replace(["\t", "\n"], '', $product['Details']);
             $item->price = $product['Price'];
             $item->ext_offer_url = $product['ext_offer_url'];
             $item->ext_category = $categories[$product['ext_category_id']]['ext_category_name'] ?? null;

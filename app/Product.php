@@ -50,7 +50,7 @@ class Product extends BaseModel
         $query->orderBy('score', ['$meta' => 'textScore']);
         $query->skip(($page - 1) * $limit);
         $query->take($limit);
-        return $query->whereRaw(['$text' => ['$search' => $search]]);
+        return $query->whereRaw(['$text' => ['$search' => '"' . $search . '"']]);
     }
 
     /**
