@@ -17,10 +17,8 @@ class Init extends Migration
             $collection->index(
                 [
                     'name' => 'text',
-                    'desc' => 'text',
-                    'detail' => 'text',
                     'main_category' => 'text',
-                    'ext_category' => 'text'
+                    'ext_category' => 'text',
                 ],
                 'products_full_text',
                 null,
@@ -29,11 +27,9 @@ class Init extends Migration
                         'name' => 32,
                         'ext_category' => 8,
                         'main_category' => 16,
-                        //                        'desc' => 10,
-                        //                        'detail' => 8,
                     ],
                     'default_language' => 'russian',
-                    'name' => 'recipe_full_text'
+                    'name' => 'recipe_full_text',
                 ]
             );
         });
