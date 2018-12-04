@@ -21,7 +21,7 @@ use App\Http\Resources\ProductCollection;
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereFullText($search, $sorted, $page = 1, $limit = 5)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereFullText($search, $sorted, $page = 1, $limit = 4)
  * @mixin \Eloquent
  */
 class Product extends BaseModel
