@@ -30,6 +30,7 @@ class ImportController extends Controller
             $item->detail = str_replace(["\t", "\n"], '', $product['Details']);
             $item->price = $product['Price'];
             $item->ext_offer_url = $product['ext_offer_url'];
+            //            $item->short_link = Shorty::shorten($product['ext_offer_url']);
             $item->ext_category = $categories[$product['ext_category_id']]['ext_category_name'] ?? null;
             $item->main_category = $main_categories[$product['int_category_id']]['Subdivision_Name'] ?? null;
             $item->seller = [

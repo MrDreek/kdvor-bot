@@ -163,6 +163,7 @@ return [
          */
         Jenssegers\Mongodb\MongodbServiceProvider::class,
         Ixudra\Curl\CurlServiceProvider::class,
+        Mbarwick83\Shorty\ShortyServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -187,7 +188,7 @@ return [
 
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
-//        'Auth' => Illuminate\Support\Facades\Auth::class,
+        //        'Auth' => Illuminate\Support\Facades\Auth::class,
         'Blade' => Illuminate\Support\Facades\Blade::class,
         'Broadcast' => Illuminate\Support\Facades\Broadcast::class,
         'Bus' => Illuminate\Support\Facades\Bus::class,
@@ -220,6 +221,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Curl' => Ixudra\Curl\Facades\Curl::class,
+        'Shorty' => Mbarwick83\Shorty\Facades\Shorty::class,
     ],
 
 ];

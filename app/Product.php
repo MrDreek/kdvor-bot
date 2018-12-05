@@ -8,16 +8,17 @@ use App\Http\Resources\ProductCollection;
 /**
  * App\Product
  *
- * @property string name
- * @property string desc
- * @property string detail
- * @property string price
- * @property string ext_offer_url
+ * @property string      name
+ * @property string      desc
+ * @property string      detail
+ * @property string      price
+ * @property string      ext_offer_url
  * @property string|null main_category
  * @property string|null ext_category
- * @property array seller
- * @property-read mixed $id
- * @property mixed message_id
+ * @property array       seller
+ * @property-read mixed  $id
+ * @property mixed       message_id
+ * @property string      short_link
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
