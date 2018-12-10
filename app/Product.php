@@ -168,6 +168,6 @@ class Product extends BaseModel
     public function getLink(): string
     {
         //        return self::BASE_URL . $this->seller['url'] . str_replace('${product}', $this->message_id, self::PRODUCT_URL);
-        return self::BASE_URL . $this->seller['url'] . $this->message_id;
+        return self::BASE_URL . $this->seller['url'] . $this->message_id . '/';
     }
 }
