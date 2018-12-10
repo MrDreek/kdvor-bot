@@ -34,7 +34,8 @@ class SimpleProduct extends JsonResource
             'ext_category' => $this->ext_category,
             'ext_offer_url' => $this->ext_offer_url,
             'seller' => $this->seller,
-            'weight' => $this->score
+            'product_link' => $this->getLink(),
+            'weight' => $this->score,
         ];
     }
 }

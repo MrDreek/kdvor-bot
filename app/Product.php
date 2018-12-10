@@ -73,7 +73,7 @@ class Product extends BaseModel
      */
     public static function findCost($name, $page, $perPage, $sorted)
     {
-        $products = self::select(['name', 'desc', 'detail', 'price', 'main_category', 'ext_category', 'seller', 'ext_offer_url'])
+        $products = self::select(['name', 'desc', 'detail', 'price', 'main_category', 'ext_category', 'seller', 'ext_offer_url', 'message_id'])
             ->whereFullText($name, $sorted, $page ?? 1, $perPage ?? 4)
             ->get();
 
