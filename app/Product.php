@@ -30,7 +30,7 @@ class Product extends BaseModel
     protected $collection = 'products_collection';
 
     private const BASE_URL = 'http://kdvor3mkad.ru';
-    private const PRODUCT_URL = 'tovar_${product}/';
+    private const PRODUCT_URL = 'tovar_${product}.html';
 
     /**
      * @param $query
