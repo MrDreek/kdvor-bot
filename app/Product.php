@@ -33,11 +33,12 @@ class Product extends BaseModel
     private const PRODUCT_URL = 'tovar_${product}.html';
 
     /**
-     * @param $query
-     * @param $search
-     * @param $sorted
+     * @param     $query
+     * @param     $search
+     * @param     $sorted
      * @param int $page
      * @param int $limit
+     *
      * @return mixed
      */
     public function scopeWhereFullText($query, $search, $sorted, $page = 1, $limit = 4)
@@ -57,6 +58,7 @@ class Product extends BaseModel
     /**
      * @param $query
      * @param $search
+     *
      * @return mixed
      */
     public function scopeWhereFullTextSorted($query, $search)
@@ -69,6 +71,7 @@ class Product extends BaseModel
      * @param $page
      * @param $perPage
      * @param $sorted
+     *
      * @return ProductResource|ProductCollection|array
      */
     public static function findCost($name, $page, $perPage, $sorted)
@@ -82,25 +85,25 @@ class Product extends BaseModel
                 [
                     '$match' => [
                         '$text' => [
-                            '$search' => $name
-                        ]
+                            '$search' => $name,
+                        ],
                     ],
                 ],
                 [
                     '$group' => [
                         '_id' => '$referenceField',
                         'count' => [
-                            '$sum' => 1
+                            '$sum' => 1,
                         ],
                         'min' => [
-                            '$min' => '$price'
+                            '$min' => '$price',
                         ],
                         'max' => [
-                            '$max' => '$price'
-                        ]
+                            '$max' => '$price',
+                        ],
 
-                    ]
-                ]
+                    ],
+                ],
             ]);
         });
 
@@ -125,6 +128,7 @@ class Product extends BaseModel
 
     /**
      * @param $name
+     *
      * @return ProductResource|array
      */
     public static function findLowCost($name)
@@ -142,6 +146,7 @@ class Product extends BaseModel
 
     /**
      * @param $name
+     *
      * @return ProductResource|array
      */
     public static function findHighCost($name)
@@ -162,6 +167,7 @@ class Product extends BaseModel
      */
     public function getLink(): string
     {
-        return self::BASE_URL . $this->seller['url'] . str_replace('${product}', $this->message_id, self::PRODUCT_URL);
+        //        return self::BASE_URL . $this->seller['url'] . str_replace('${product}', $this->message_id, self::PRODUCT_URL);
+        return self::BASE_URL . $this->seller['url'] . $this->message_id;
     }
 }
