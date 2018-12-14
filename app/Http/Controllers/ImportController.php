@@ -8,13 +8,17 @@ use App\MySql\Product as MyProduct;
 use App\MySql\Seller;
 use App\Product;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
+use Jenssegers\Mongodb\Schema\Blueprint;
 
 class ImportController extends Controller
 {
     public function index()
     {
+        Log::notice('Начало импорта данных из mysql');
         Product::truncate();
-        $products = MyProduct::select(['checked', 'Message_ID', 'Subdivision_ID', 'Name', 'Description', 'Details', 'Price', 'ext_category_id', 'ext_offer_url', 'int_category_id'])
+        $products = MyProduct::select(['checked', 'Keyword', 'Message_ID', 'Subdivision_ID', 'Name', 'Description', 'Details', 'Price', 'ext_category_id', 'ext_offer_url', 'int_category_id'])
             ->where('checked', 1)
             ->get()
             ->toArray();
@@ -29,8 +33,8 @@ class ImportController extends Controller
             $item->desc = str_replace(["\t", "\n"], '', $product['Description']);
             $item->detail = str_replace(["\t", "\n"], '', $product['Details']);
             $item->price = $product['Price'];
+            $item->keyword = $product['Keyword'];
             $item->ext_offer_url = $product['ext_offer_url'];
-            //            $item->short_link = Shorty::shorten($product['ext_offer_url']);
             $item->ext_category = $categories[$product['ext_category_id']]['ext_category_name'] ?? null;
             $item->main_category = $main_categories[$product['int_category_id']]['Subdivision_Name'] ?? null;
             $item->seller = [
@@ -43,10 +47,38 @@ class ImportController extends Controller
             try {
                 $item->save();
             } catch (\Exception $e) {
+                Log::error('Ошибка сохранения!');
                 return ['message' => 'Ошибка сохранения!', 'code' => 500, 'inner_message' => $e->getMessage()];
             }
         }
 
+        try {
+            Schema::connection('mongodb')->table('products_collection', function (Blueprint $collection) {
+                $collection->index(
+                    [
+                        'name' => 'text',
+                        'main_category' => 'text',
+                        'ext_category' => 'text',
+                    ],
+                    'products_full_text',
+                    null,
+                    [
+                        'weights' => [
+                            'name' => 32,
+                            'ext_category' => 8,
+                            'main_category' => 16,
+                        ],
+                        'default_language' => 'russian',
+                        'name' => 'recipe_full_text',
+                    ]
+                );
+            });
+        } catch (\Exception $e) {
+            Log::error('Ошибка создания текстового индекса');
+            return ['message' => 'Ошибка создания текстового индекса', 'code' => 500, 'inner_message' => $e->getMessage()];
+        }
+
+        Log::notice('Конец импорта данных из mysql');
         return ['message' => 'OK!', 'code' => 200];
     }
 }

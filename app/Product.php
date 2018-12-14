@@ -19,6 +19,7 @@ use App\Http\Resources\ProductCollection;
  * @property-read mixed  $id
  * @property mixed       message_id
  * @property string      short_link
+ * @property string      keyword
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
@@ -30,7 +31,6 @@ class Product extends BaseModel
     protected $collection = 'products_collection';
 
     private const BASE_URL = 'http://kdvor3mkad.ru';
-    private const PRODUCT_URL = 'tovar_${product}.html';
 
     /**
      * @param     $query
@@ -76,7 +76,7 @@ class Product extends BaseModel
      */
     public static function findCost($name, $page, $perPage, $sorted)
     {
-        $products = self::select(['name', 'desc', 'detail', 'price', 'main_category', 'ext_category', 'seller', 'ext_offer_url', 'message_id'])
+        $products = self::select(['name', 'desc', 'detail', 'price', 'main_category', 'ext_category', 'seller', 'ext_offer_url', 'message_id', 'keyword'])
             ->whereFullText($name, $sorted, $page ?? 1, $perPage ?? 4)
             ->get();
 
@@ -167,7 +167,10 @@ class Product extends BaseModel
      */
     public function getLink(): string
     {
-        //        return self::BASE_URL . $this->seller['url'] . str_replace('${product}', $this->message_id, self::PRODUCT_URL);
+        if (!empty($this->keyword)) {
+            return self::BASE_URL . $this->seller['url'] . $this->keyword . '/';
+        }
+
         return self::BASE_URL . $this->seller['url'] . $this->message_id . '/';
     }
 }
