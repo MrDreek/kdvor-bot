@@ -46,13 +46,13 @@ class Product extends BaseModel
         $query->getQuery()->projections = ['score' => ['$meta' => 'textScore']];
         if ($sorted) {
             $query->orderBy('price', 'asc');
-        } elseif ($sorted !== null) {
+        } elseif ($sorted === false) {
             $query->orderBy('price', 'desc');
         }
         $query->orderBy('score', ['$meta' => 'textScore']);
         $query->skip(($page - 1) * $limit);
         $query->take($limit);
-        return $query->whereRaw(['$text' => ['$search' => '"' . $search . '"']]);
+        return $query->whereRaw(['$text' => ['$search' => $search]]);
     }
 
     /**
