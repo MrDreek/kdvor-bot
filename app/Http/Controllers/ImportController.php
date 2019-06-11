@@ -7,6 +7,7 @@ use App\MySql\MainCategory;
 use App\MySql\Product as MyProduct;
 use App\MySql\Seller;
 use App\Product;
+use Exception;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +15,7 @@ use Jenssegers\Mongodb\Schema\Blueprint;
 
 class ImportController extends Controller
 {
-    public function index()
+    public function index(): array
     {
         Log::notice('Начало импорта данных из mysql');
         Product::truncate();
@@ -36,7 +37,7 @@ class ImportController extends Controller
             $item->keyword = $product['Keyword'];
             $item->ext_offer_url = $product['ext_offer_url'];
 
-            $ext_category = array_filter($categories, function ($item, $key) use ($product){
+            $ext_category = array_filter($categories, static function ($item) use ($product){
                 return $item['ext_category_id'] === $product['ext_category_id'] && $item['Subdivision_ID'] === $product['Subdivision_ID'];
             }, ARRAY_FILTER_USE_BOTH);
 
@@ -51,14 +52,14 @@ class ImportController extends Controller
             ];
             try {
                 $item->save();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error('Ошибка сохранения!');
                 return ['message' => 'Ошибка сохранения!', 'code' => 500, 'inner_message' => $e->getMessage()];
             }
         }
 
         try {
-            Schema::connection('mongodb')->table('products_collection', function (Blueprint $collection) {
+            Schema::connection('mongodb')->table('products_collection', static function (Blueprint $collection) {
                 $collection->index(
                     [
                         'name' => 'text',
@@ -78,7 +79,7 @@ class ImportController extends Controller
                     ]
                 );
             });
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Ошибка создания текстового индекса');
             return ['message' => 'Ошибка создания текстового индекса', 'code' => 500, 'inner_message' => $e->getMessage()];
         }

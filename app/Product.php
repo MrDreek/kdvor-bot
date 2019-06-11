@@ -3,23 +3,24 @@
 namespace App;
 
 use App\Http\Resources\Product as ProductResource;
-use App\Http\Resources\ProductCollection;
+use App\Http\Resources\SellerCollection;
+use App\Http\Resources\SellerResource;
 
 /**
  * App\Product
  *
- * @property string      name
- * @property string      desc
- * @property string      detail
- * @property string      price
- * @property string      ext_offer_url
+ * @property string name
+ * @property string desc
+ * @property string detail
+ * @property string price
+ * @property string ext_offer_url
  * @property string|null main_category
  * @property string|null ext_category
- * @property array       seller
- * @property-read mixed  $id
- * @property mixed       message_id
- * @property string      short_link
- * @property string      keyword
+ * @property array seller
+ * @property-read mixed $id
+ * @property mixed message_id
+ * @property string short_link
+ * @property string keyword
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
@@ -44,9 +45,9 @@ class Product extends BaseModel
     public function scopeWhereFullText($query, $search, $sorted, $page = 1, $limit = 4)
     {
         $query->getQuery()->projections = ['score' => ['$meta' => 'textScore']];
-        if ($sorted) {
+        if($sorted) {
             $query->orderBy('price', 'asc');
-        } elseif ($sorted === false) {
+        } elseif($sorted === false) {
             $query->orderBy('price', 'desc');
         }
         $query->orderBy('score', ['$meta' => 'textScore']);
@@ -72,15 +73,26 @@ class Product extends BaseModel
      * @param $perPage
      * @param $sorted
      *
-     * @return ProductResource|ProductCollection|array
      */
     public static function findCost($name, $page, $perPage, $sorted)
     {
-        $products = self::select(['name', 'desc', 'detail', 'price', 'main_category', 'ext_category', 'seller', 'ext_offer_url', 'message_id', 'keyword'])
+        $sellers = self::select([
+            'name',
+            'desc',
+            'detail',
+            'price',
+            'main_category',
+            'ext_category',
+            'seller',
+            'ext_offer_url',
+            'message_id',
+            'keyword'
+        ])
             ->whereFullText($name, $sorted, $page ?? 1, $perPage ?? 4)
-            ->get();
+            ->get()
+            ->groupBy('seller.seller_name');
 
-        $count = self::raw(function ($collection) use ($name) {
+        $count = self::raw(static function($collection) use ($name) {
             return $collection->aggregate([
                 [
                     '$match' => [
@@ -91,7 +103,10 @@ class Product extends BaseModel
                 ],
                 [
                     '$group' => [
-                        '_id' => '$referenceField',
+                        '_id' => [
+                            'referenceField' => '$referenceField',
+                            'seller_name' => '$seller.seller_name'
+                        ],
                         'count' => [
                             '$sum' => 1,
                         ],
@@ -100,30 +115,32 @@ class Product extends BaseModel
                         ],
                         'max' => [
                             '$max' => '$price',
-                        ],
-
+                        ]
                     ],
                 ],
             ]);
         });
 
-        $info = $count->first();
+        $info = $count;
 
-        if ($info === null || $info->count === 0) {
+        if($info === null || $info->count() === 0) {
             return ['data' => 'Товар не найден, попробуйте другой запрос', 'error' => true, 'code' => 404];
         }
 
-        if ($info->count === 1) {
-            return new ProductResource($products[0]);
+        if($info->count() === 1) {
+            return new SellerResource($sellers[0]);
         }
 
-        $products['info'] = $info;
-
-        if ($sorted) {
-            $products = $products->sortBy('price');
+        if($sorted) {
+            $sellers = $sellers->sortBy('price');
         }
 
-        return new ProductCollection($products);
+        $sellers->map(static function($value, $key) use ($info) {
+            $value['info'] = $info->firstWhere('_id.seller_name', $key)->toArray();
+            return $value;
+        });
+
+        return new SellerCollection($sellers);
     }
 
     /**
@@ -137,7 +154,7 @@ class Product extends BaseModel
             ->orderBy('price', 'asc')
             ->first();
 
-        if ($products === null) {
+        if($products === null) {
             return ['data' => 'Товар не найден, попробуйте другой запрос', 'code' => 404];
         }
 
@@ -155,7 +172,7 @@ class Product extends BaseModel
             ->orderBy('price', 'desc')
             ->first();
 
-        if ($products === null) {
+        if($products === null) {
             return ['data' => 'Товар не найден, попробуйте другой запрос', 'code' => 404];
         }
 
@@ -167,7 +184,7 @@ class Product extends BaseModel
      */
     public function getLink(): string
     {
-        if (!empty($this->keyword)) {
+        if(!empty($this->keyword)) {
             return self::BASE_URL . $this->seller['url'] . $this->keyword . '/';
         }
 
