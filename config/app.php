@@ -41,7 +41,6 @@ return [
     'proxy_username' => env('PROXY_USERNAME'), // имя пользователя для авторизации прокси
     'proxy_password' => env('PROXY_PASSWORD'), // пароль пользователя для авторизации прокси
 
-
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
@@ -164,6 +163,7 @@ return [
         Jenssegers\Mongodb\MongodbServiceProvider::class,
         Ixudra\Curl\CurlServiceProvider::class,
         Mbarwick83\Shorty\ShortyServiceProvider::class,
+        Jenssegers\Mongodb\MongodbQueueServiceProvider::class,
 
         /*
          * Application Service Providers...
