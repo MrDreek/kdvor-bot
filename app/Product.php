@@ -9,18 +9,18 @@ use App\Http\Resources\SellerResource;
 /**
  * App\Product
  *
- * @property string name
- * @property string desc
- * @property string detail
- * @property string price
- * @property string ext_offer_url
+ * @property string      name
+ * @property string      desc
+ * @property string      detail
+ * @property string      price
+ * @property string      ext_offer_url
  * @property string|null main_category
  * @property string|null ext_category
- * @property array seller
- * @property-read mixed $id
- * @property mixed message_id
- * @property string short_link
- * @property string keyword
+ * @property array       seller
+ * @property-read mixed  $id
+ * @property mixed       message_id
+ * @property string      short_link
+ * @property string      keyword
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
@@ -73,8 +73,9 @@ class Product extends BaseModel
      * @param $perPage
      * @param $sorted
      *
+     * @return SellerCollection|SellerResource|array
      */
-    public static function findCost($name, $page, $perPage, $sorted)
+    public static function findCost($name, $page = 1, $perPage = 4, $sorted = null)
     {
         $sellers = self::select([
             'name',
@@ -88,7 +89,7 @@ class Product extends BaseModel
             'message_id',
             'keyword'
         ])
-            ->whereFullText($name, $sorted, $page ?? 1, $perPage ?? 4)
+            ->whereFullText($name, $sorted, $page, $perPage)
             ->get()
             ->groupBy('seller.seller_name');
 
