@@ -4,7 +4,10 @@ namespace App;
 
 use App\Http\Resources\Product as ProductResource;
 use App\Http\Resources\SellerCollection;
+use App\Http\Resources\SellerProductCollection;
 use App\Http\Resources\SellerResource;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * App\Product
@@ -21,11 +24,11 @@ use App\Http\Resources\SellerResource;
  * @property mixed       message_id
  * @property string      short_link
  * @property string      keyword
- * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product query()
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereFullText($search, $sorted, $page = 1, $limit = 4)
- * @mixin \Eloquent
+ * @method static Builder|Product newModelQuery()
+ * @method static Builder|Product newQuery()
+ * @method static Builder|Product query()
+ * @method static Builder|Product whereFullText($search, $sorted, $page = 1, $limit = 4)
+ * @mixin Eloquent
  */
 class Product extends BaseModel
 {
@@ -178,6 +181,81 @@ class Product extends BaseModel
         }
 
         return new ProductResource($products);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @param string $seller_name
+     * @param int    $page
+     * @param int    $perPage
+     * @param null   $sorted
+     *
+     * @return SellerProductCollection|ProductResource|array
+     */
+    public static function findSellerCost(string $name, string $seller_name, $page = 1, $perPage = 4, $sorted = null)
+    {
+        $products = self::select([
+            'name',
+            'desc',
+            'detail',
+            'price',
+            'main_category',
+            'ext_category',
+            'seller',
+            'ext_offer_url',
+            'message_id',
+            'keyword'
+        ])
+            ->where('seller.seller_name', '=', $seller_name)
+            ->whereFullText($name, $sorted, $page ?? 1, $perPage ?? 4)
+            ->get();
+
+        $count = self::raw(static function($collection) use ($name, $seller_name) {
+            return $collection->aggregate([
+                [
+                    '$match' => [
+                        '$text' => [
+                            '$search' => $name,
+                        ],
+                        'seller.seller_name' => $seller_name
+                    ],
+                ],
+                [
+                    '$group' => [
+                        '_id' => '$referenceField',
+                        'count' => [
+                            '$sum' => 1,
+                        ],
+                        'min' => [
+                            '$min' => '$price',
+                        ],
+                        'max' => [
+                            '$max' => '$price',
+                        ],
+
+                    ],
+                ],
+            ]);
+        });
+
+        $info = $count->first();
+
+        if($info === null || $info->count === 0) {
+            return ['data' => 'Товар не найден, попробуйте другой запрос', 'error' => true, 'code' => 404];
+        }
+
+        if($info->count === 1) {
+            return new ProductResource($products[0]);
+        }
+
+        $products['info'] = $info;
+
+        if($sorted) {
+            $products = $products->sortBy('price');
+        }
+
+        return new SellerProductCollection($products);
     }
 
     /**
