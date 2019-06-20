@@ -9,7 +9,6 @@ use Illuminate\Routing\Controller;
 
 class ProductController extends Controller
 {
-
     public function cost(NameRequest $request)
     {
         $products = Product::findCost($request->name, $request->page, $request->per_page, $request->sorted);
@@ -30,18 +29,21 @@ class ProductController extends Controller
             $request->per_page,
             $request->sorted
         );
+
         return response()->json($products);
     }
 
     public function cheapest(NameRequest $request)
     {
         $products = Product::findLowCost($request->name);
+
         return response()->json($products);
     }
 
     public function dearest(NameRequest $request)
     {
         $products = Product::findHighCost($request->name);
+
         return response()->json($products);
     }
 }

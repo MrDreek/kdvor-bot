@@ -11,7 +11,7 @@ class SellerProductCollection extends ResourceCollection
     /**
      * Transform the resource collection into an array.
      *
-     * @param  Request  $request
+     * @param Request $request
      *
      * @return array
      */
@@ -34,7 +34,7 @@ class SellerProductCollection extends ResourceCollection
                 'products' => $products,
             ],
             'error' => false,
-            'code'  => 200
+            'code'  => 200,
         ];
     }
 }

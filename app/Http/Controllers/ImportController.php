@@ -16,6 +16,7 @@ class ImportController extends Controller
         } catch (Exception $e) {
             Log::error('error new job. '.json_encode($e, JSON_UNESCAPED_UNICODE));
         }
+
         return ['message' => 'Обработка импорта даннных запущена!', 'code' => 200];
     }
 }

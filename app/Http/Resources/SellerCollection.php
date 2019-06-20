@@ -10,7 +10,7 @@ class SellerCollection extends ResourceCollection
     /**
      * Transform the resource collection into an array.
      *
-     * @param  Request  $request
+     * @param Request $request
      *
      * @return array
      */
@@ -23,7 +23,7 @@ class SellerCollection extends ResourceCollection
         return [
             'sellers' => $sellers,
             'error'   => false,
-            'code'    => 200
+            'code'    => 200,
         ];
     }
 }

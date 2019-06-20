@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 /**
- * App\BaseModel
+ * App\BaseModel.
  *
  * @property-read mixed $id
+ *
  * @method static Builder|BaseModel newModelQuery()
  * @method static Builder|BaseModel newQuery()
  * @method static Builder|BaseModel query()

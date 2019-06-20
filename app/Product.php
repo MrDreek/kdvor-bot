@@ -10,7 +10,7 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * App\Product
+ * App\Product.
  *
  * @property string name
  * @property string desc
@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed message_id
  * @property string short_link
  * @property string keyword
+ *
  * @method static Builder|Product newModelQuery()
  * @method static Builder|Product newQuery()
  * @method static Builder|Product query()
@@ -40,8 +41,8 @@ class Product extends BaseModel
      * @param     $query
      * @param     $search
      * @param     $sorted
-     * @param  int  $page
-     * @param  int  $limit
+     * @param int $page
+     * @param int $limit
      *
      * @return mixed
      */
@@ -56,6 +57,7 @@ class Product extends BaseModel
         $query->orderBy('score', ['$meta' => 'textScore']);
         $query->skip(($page - 1) * $limit);
         $query->take($limit);
+
         return $query->whereRaw(['$text' => ['$search' => $search]]);
     }
 
@@ -90,7 +92,7 @@ class Product extends BaseModel
             'seller',
             'ext_offer_url',
             'message_id',
-            'keyword'
+            'keyword',
         ])
             ->whereFullText($name, $sorted, $page, $perPage)
             ->get()
@@ -109,7 +111,7 @@ class Product extends BaseModel
                     '$group' => [
                         '_id'   => [
                             'referenceField' => '$referenceField',
-                            'seller_name'    => '$seller.seller_name'
+                            'seller_name'    => '$seller.seller_name',
                         ],
                         'count' => [
                             '$sum' => 1,
@@ -119,7 +121,7 @@ class Product extends BaseModel
                         ],
                         'max'   => [
                             '$max' => '$price',
-                        ]
+                        ],
                     ],
                 ],
             ]);
@@ -141,6 +143,7 @@ class Product extends BaseModel
 
         $sellers->map(static function ($value, $key) use ($info) {
             $value['info'] = $info->firstWhere('_id.seller_name', $key)->toArray();
+
             return $value;
         });
 
@@ -184,12 +187,11 @@ class Product extends BaseModel
     }
 
     /**
-     * @param  string  $name
-     *
-     * @param  string  $seller_name
-     * @param  int  $page
-     * @param  int  $perPage
-     * @param  null  $sorted
+     * @param string $name
+     * @param string $seller_name
+     * @param int    $page
+     * @param int    $perPage
+     * @param null   $sorted
      *
      * @return SellerProductCollection|ProductResource|array
      */
@@ -205,7 +207,7 @@ class Product extends BaseModel
             'seller',
             'ext_offer_url',
             'message_id',
-            'keyword'
+            'keyword',
         ])
             ->where('seller.seller_name', '=', $seller_name)
             ->whereFullText($name, $sorted, $page ?? 1, $perPage ?? 4)
@@ -218,7 +220,7 @@ class Product extends BaseModel
                         '$text'              => [
                             '$search' => $name,
                         ],
-                        'seller.seller_name' => $seller_name
+                        'seller.seller_name' => $seller_name,
                     ],
                 ],
                 [
