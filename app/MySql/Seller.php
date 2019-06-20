@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\MySql\Seller
+ * App\MySql\Seller.
  *
  * @method static Builder|Seller newModelQuery()
  * @method static Builder|Seller newQuery()
  * @method static Builder|Seller query()
  * @mixin Eloquent
+ *
  * @property int $Subdivision_ID
  * @property int $Catalogue_ID
  * @property int $Parent_Sub_ID
@@ -62,6 +63,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $inn
  * @property float|null $Latitude
  * @property float|null $Longitude
+ *
  * @method static Builder|Seller whereCacheAccessID($value)
  * @method static Builder|Seller whereCacheLifetime($value)
  * @method static Builder|Seller whereCatalogueID($value)

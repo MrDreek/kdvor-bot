@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\MySql\MainCategory
+ * App\MySql\MainCategory.
  *
  * @property int $Subdivision_ID
  * @property int $Catalogue_ID
@@ -58,6 +58,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $inn
  * @property float|null $Latitude
  * @property float|null $Longitude
+ *
  * @method static Builder|MainCategory newModelQuery()
  * @method static Builder|MainCategory newQuery()
  * @method static Builder|MainCategory query()

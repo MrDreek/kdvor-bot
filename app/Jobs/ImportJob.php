@@ -50,7 +50,7 @@ class ImportJob implements ShouldQueue
             'Price',
             'ext_category_id',
             'ext_offer_url',
-            'int_category_id'
+            'int_category_id',
         ])
             ->where('checked', 1)
             ->get()
@@ -58,12 +58,12 @@ class ImportJob implements ShouldQueue
         $categories = Category::get([
             'ext_category_name',
             'ext_category_id',
-            'Subdivision_ID'
+            'Subdivision_ID',
         ])->keyBy('ext_category_id')->toArray();
         $main_categories = MainCategory::get([
             'Subdivision_ID',
             'Subdivision_Name',
-            'Parent_Sub_ID'
+            'Parent_Sub_ID',
         ])->keyBy('Subdivision_ID')->toArray();
         $sellers = Seller::get([
             'Subdivision_Name',
@@ -72,11 +72,11 @@ class ImportJob implements ShouldQueue
             'email',
             'site',
             'Subdivision_ID',
-            'Parent_Sub_ID'
+            'Parent_Sub_ID',
         ])->where('Parent_Sub_ID', Seller::PARENT_SUB_ID)->keyBy('Subdivision_ID')->toArray();
 
         foreach ($products as $product) {
-            $item = new Product;
+            $item = new Product();
             $item->name = $product['Name'];
             $item->message_id = $product['Message_ID'];
             $item->desc = str_replace(["\t", "\n"], '', $product['Description']);
@@ -98,6 +98,7 @@ class ImportJob implements ShouldQueue
                 'url'         => $sellers[$product['Subdivision_ID']]['Hidden_URL'],
                 'site'        => $sellers[$product['Subdivision_ID']]['site'],
             ];
+
             try {
                 $item->save();
             } catch (Exception $e) {

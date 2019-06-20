@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\MySql\Category
+ * App\MySql\Category.
  *
  * @method static Builder|Category newModelQuery()
  * @method static Builder|Category newQuery()
  * @method static Builder|Category query()
  * @mixin Eloquent
+ *
  * @property int $Message_ID
  * @property int $User_ID
  * @property int $Subdivision_ID
@@ -38,6 +39,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $ext_category_id
  * @property int|null $ext_category_parent_id
  * @property int|null $int_category_id
+ *
  * @method static Builder|Category whereChecked($value)
  * @method static Builder|Category whereCreated($value)
  * @method static Builder|Category whereExtCategoryId($value)

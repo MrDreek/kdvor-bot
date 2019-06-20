@@ -22,7 +22,7 @@ class Product extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  Request  $request
+     * @param Request $request
      *
      * @return array
      */
@@ -39,10 +39,10 @@ class Product extends JsonResource
                 'ext_offer_url' => $this->ext_offer_url,
                 'seller'        => $this->seller,
                 'weight'        => $this->score,
-                'link'          => $this->getLink()
+                'link'          => $this->getLink(),
             ],
             'error' => false,
-            'code'  => 200
+            'code'  => 200,
         ];
     }
 }

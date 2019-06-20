@@ -29,8 +29,8 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  Request  $request
-     * @param  Exception  $exception
+     * @param Request   $request
+     * @param Exception $exception
      *
      * @return Response
      */
@@ -41,27 +41,28 @@ class Handler extends ExceptionHandler
             foreach ($exception->validator->errors()->getMessages() as $key => $message) {
                 $error[$key] = implode(', ', $message);
             }
+
             return response()->json([
-                'error' => $error
+                'error' => $error,
             ], 400);
         }
 
         if ($exception instanceof NotFoundHttpException) {
             return response()->json([
-                'message' => 'Неправильный URL'
+                'message' => 'Неправильный URL',
             ], 404);
         }
 
         if ($exception instanceof ModelNotFoundException) {
             return response()->json([
                 'message' => $exception->getMessage(),
-                'code'    => 404
+                'code'    => 404,
             ], 404);
         }
 
         return response()->json([
             'message' => 'Не обработанная ошибка',
-            'error'   => $exception->getMessage()
+            'error'   => $exception->getMessage(),
         ], 500);
     }
 }

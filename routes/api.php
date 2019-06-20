@@ -19,5 +19,3 @@ Route::prefix('product')->group(static function () {
     Route::post('dearest', 'ProductController@dearest')->name('dearest');
     Route::post('cost-by-seller', 'ProductController@costBySeller')->name('cost-by-seller');
 });
-
-
