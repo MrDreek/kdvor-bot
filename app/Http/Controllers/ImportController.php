@@ -13,8 +13,8 @@ class ImportController extends Controller
     {
         try {
             dispatch(new ImportJob());
-        } catch(Exception $e) {
-            Log::error('error new job. ' . json_encode($e, JSON_UNESCAPED_UNICODE));
+        } catch (Exception $e) {
+            Log::error('error new job. '.json_encode($e, JSON_UNESCAPED_UNICODE));
         }
         return ['message' => 'Обработка импорта даннных запущена!', 'code' => 200];
     }

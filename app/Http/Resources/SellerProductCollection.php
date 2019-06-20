@@ -11,7 +11,8 @@ class SellerProductCollection extends ResourceCollection
     /**
      * Transform the resource collection into an array.
      *
-     * @param  Request $request
+     * @param  Request  $request
+     *
      * @return array
      */
     public function toArray($request): array
@@ -26,14 +27,14 @@ class SellerProductCollection extends ResourceCollection
         })->toArray();
 
         return [
-            'data' => [
-                'count' => $count,
-                'min' => $min,
-                'max' => $max,
+            'data'  => [
+                'count'    => $count,
+                'min'      => $min,
+                'max'      => $max,
                 'products' => $products,
             ],
             'error' => false,
-            'code' => 200
+            'code'  => 200
         ];
     }
 }

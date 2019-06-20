@@ -20,22 +20,23 @@ class SimpleProduct extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
+     *
      * @return array
      */
     public function toArray($request): array
     {
         return [
-            'name' => $this->name,
-            'desc' => $this->desc,
-            'detail' => $this->detail,
-            'price' => $this->price,
+            'name'          => $this->name,
+            'desc'          => $this->desc,
+            'detail'        => $this->detail,
+            'price'         => $this->price,
             'main_category' => $this->main_category,
-            'ext_category' => $this->ext_category,
+            'ext_category'  => $this->ext_category,
             'ext_offer_url' => $this->ext_offer_url,
-            'seller' => $this->seller,
-            'product_link' => $this->getLink(),
-            'weight' => $this->score,
+            'seller'        => $this->seller,
+            'product_link'  => $this->getLink(),
+            'weight'        => $this->score,
         ];
     }
 }

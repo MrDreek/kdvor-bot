@@ -22,26 +22,27 @@ class Product extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  Request $request
+     * @param  Request  $request
+     *
      * @return array
      */
     public function toArray($request): array
     {
         return [
-            'data' => [
-                'name' => $this->name,
-                'desc' => $this->desc,
-                'detail' => $this->detail,
-                'price' => $this->price,
+            'data'  => [
+                'name'          => $this->name,
+                'desc'          => $this->desc,
+                'detail'        => $this->detail,
+                'price'         => $this->price,
                 'main_category' => $this->main_category,
-                'ext_category' => $this->ext_category,
+                'ext_category'  => $this->ext_category,
                 'ext_offer_url' => $this->ext_offer_url,
-                'seller' => $this->seller,
-                'weight' => $this->score,
-                'link' => $this->getLink()
+                'seller'        => $this->seller,
+                'weight'        => $this->score,
+                'link'          => $this->getLink()
             ],
             'error' => false,
-            'code' => 200
+            'code'  => 200
         ];
     }
 }

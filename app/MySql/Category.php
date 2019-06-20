@@ -2,15 +2,17 @@
 
 namespace App\MySql;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * App\MySql\Category
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Category newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Category newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Category query()
- * @mixin \Eloquent
+ * @method static Builder|Category newModelQuery()
+ * @method static Builder|Category newQuery()
+ * @method static Builder|Category query()
+ * @mixin Eloquent
  * @property int $Message_ID
  * @property int $User_ID
  * @property int $Subdivision_ID
@@ -36,31 +38,31 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $ext_category_id
  * @property int|null $ext_category_parent_id
  * @property int|null $int_category_id
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereChecked($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereCreated($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereExtCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereExtCategoryName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereExtCategoryParentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereIP($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereIntCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereKeyword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereLastIP($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereLastUpdated($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereLastUserAgent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereLastUserID($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereMessageID($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereNcDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereNcKeywords($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereNcSMODescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereNcSMOImage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereNcSMOTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereNcTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereParentMessageID($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category wherePriority($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereSubClassID($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereSubdivisionID($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereUserAgent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereUserID($value)
+ * @method static Builder|Category whereChecked($value)
+ * @method static Builder|Category whereCreated($value)
+ * @method static Builder|Category whereExtCategoryId($value)
+ * @method static Builder|Category whereExtCategoryName($value)
+ * @method static Builder|Category whereExtCategoryParentId($value)
+ * @method static Builder|Category whereIP($value)
+ * @method static Builder|Category whereIntCategoryId($value)
+ * @method static Builder|Category whereKeyword($value)
+ * @method static Builder|Category whereLastIP($value)
+ * @method static Builder|Category whereLastUpdated($value)
+ * @method static Builder|Category whereLastUserAgent($value)
+ * @method static Builder|Category whereLastUserID($value)
+ * @method static Builder|Category whereMessageID($value)
+ * @method static Builder|Category whereNcDescription($value)
+ * @method static Builder|Category whereNcKeywords($value)
+ * @method static Builder|Category whereNcSMODescription($value)
+ * @method static Builder|Category whereNcSMOImage($value)
+ * @method static Builder|Category whereNcSMOTitle($value)
+ * @method static Builder|Category whereNcTitle($value)
+ * @method static Builder|Category whereParentMessageID($value)
+ * @method static Builder|Category wherePriority($value)
+ * @method static Builder|Category whereSubClassID($value)
+ * @method static Builder|Category whereSubdivisionID($value)
+ * @method static Builder|Category whereUserAgent($value)
+ * @method static Builder|Category whereUserID($value)
  */
 class Category extends Model
 {

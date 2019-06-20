@@ -2,15 +2,16 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 /**
  * App\BaseModel
  *
  * @property-read mixed $id
- * @method static \Illuminate\Database\Eloquent\Builder|\App\BaseModel newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\BaseModel newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\BaseModel query()
+ * @method static Builder|BaseModel newModelQuery()
+ * @method static Builder|BaseModel newQuery()
+ * @method static Builder|BaseModel query()
  * @mixin \Eloquent
  */
 class BaseModel extends Eloquent

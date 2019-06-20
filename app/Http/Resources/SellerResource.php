@@ -10,7 +10,7 @@ class SellerResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return array
      */
@@ -22,9 +22,9 @@ class SellerResource extends JsonResource
         unset($this['info']);
 
         return [
-            'count' => $count,
-            'min' => $min,
-            'max' => $max,
+            'count'    => $count,
+            'min'      => $min,
+            'max'      => $max,
             'products' => new ProductCollection($this->resource)
         ];
     }

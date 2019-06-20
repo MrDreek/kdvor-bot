@@ -14,7 +14,7 @@ class ProductController extends Controller
     {
         $products = Product::findCost($request->name, $request->page, $request->per_page, $request->sorted);
 
-        if(isset($products['error']) && $products['error'] === true) {
+        if (isset($products['error']) && $products['error'] === true) {
             return response()->json($products, $products['code']);
         }
 

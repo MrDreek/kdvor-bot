@@ -17,7 +17,7 @@ class NameRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -27,24 +27,27 @@ class NameRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'page' => 'integer',
+            'name'     => 'required|string',
+            'page'     => 'integer',
             'per_page' => 'integer',
-            'sorted' => 'boolean',
+            'sorted'   => 'boolean',
         ];
     }
 
-    public function messages()
+    /**
+     * @return array
+     */
+    public function messages(): array
     {
         return [
-            'name.required' => 'Требуется указать название товара',
-            'name.string' => 'Название товара должно быть строкой',
-            'page.integer' => 'Номер страницы должен быть числом',
+            'name.required'    => 'Требуется указать название товара',
+            'name.string'      => 'Название товара должно быть строкой',
+            'page.integer'     => 'Номер страницы должен быть числом',
             'per_page.integer' => 'Количество элементов на страницу должно быть числом',
-            'sorted.boolean' => 'Наличие сортировки должно быть булевым значением',
+            'sorted.boolean'   => 'Наличие сортировки должно быть булевым значением',
         ];
     }
 }

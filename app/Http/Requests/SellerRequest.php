@@ -32,10 +32,10 @@ class SellerRequest extends FormRequest
     {
         return [
             'seller_name' => 'required|string',
-            'name' => 'required|string',
-            'page' => 'integer',
-            'per_page' => 'integer',
-            'sorted' => 'boolean',
+            'name'        => 'required|string',
+            'page'        => 'integer',
+            'per_page'    => 'integer',
+            'sorted'      => 'boolean',
         ];
     }
 
@@ -46,12 +46,12 @@ class SellerRequest extends FormRequest
     {
         return [
             'seller_name.required' => 'Требуется указать "продавца"',
-            'seller_name.string' => '"Продовец" должен быть строкой',
-            'name.required' => 'Требуется указать название товара',
-            'name.string' => 'Название товара должно быть строкой',
-            'page.integer' => 'Номер страницы должен быть числом',
-            'per_page.integer' => 'Количество элементов на страницу должно быть числом',
-            'sorted.boolean' => 'Наличие сортировки должно быть булевым значением',
+            'seller_name.string'   => '"Продовец" должен быть строкой',
+            'name.required'        => 'Требуется указать название товара',
+            'name.string'          => 'Название товара должно быть строкой',
+            'page.integer'         => 'Номер страницы должен быть числом',
+            'per_page.integer'     => 'Количество элементов на страницу должно быть числом',
+            'sorted.boolean'       => 'Наличие сортировки должно быть булевым значением',
         ];
     }
 }
