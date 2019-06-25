@@ -41,8 +41,8 @@ class Product extends BaseModel
      * @param     $query
      * @param     $search
      * @param     $sorted
-     * @param int $page
-     * @param int $limit
+     * @param  int  $page
+     * @param  int  $limit
      *
      * @return mixed
      */
@@ -133,10 +133,6 @@ class Product extends BaseModel
             return ['data' => 'Товар не найден, попробуйте другой запрос', 'error' => true, 'code' => 404];
         }
 
-        if ($info->count() === 1) {
-            return new SellerResource($sellers[0]);
-        }
-
         if ($sorted) {
             $sellers = $sellers->sortBy('price');
         }
@@ -187,16 +183,28 @@ class Product extends BaseModel
     }
 
     /**
-     * @param string $name
-     * @param string $seller_name
-     * @param int    $page
-     * @param int    $perPage
-     * @param null   $sorted
+     * @param  string  $name
+     * @param  string  $seller_name
+     * @param  int  $page
+     * @param  int  $perPage
+     * @param  null  $sorted
      *
      * @return SellerProductCollection|ProductResource|array
      */
     public static function findSellerCost(string $name, string $seller_name, $page = 1, $perPage = 4, $sorted = null)
     {
+        $seller = self::select([
+            'seller.seller_name'
+        ])
+            ->whereFullText($seller_name, true)
+            ->first();
+
+        if(!$seller){
+            return ['data' => 'Провавец не найден, попробуйте другой запрос', 'error' => true, 'code' => 404];
+        }
+
+        $seller_name = $seller['seller']['seller_name'];
+
         $products = self::select([
             'name',
             'desc',
@@ -248,7 +256,7 @@ class Product extends BaseModel
         }
 
         if ($info->count === 1) {
-            return new ProductResource($products[0]);
+            return new ProductResource($products);
         }
 
         $products['info'] = $info;

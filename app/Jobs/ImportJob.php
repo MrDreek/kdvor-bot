@@ -110,17 +110,19 @@ class ImportJob implements ShouldQueue
             Schema::connection('mongodb')->table('products_collection', static function (Blueprint $collection) {
                 $collection->index(
                     [
-                        'name'          => 'text',
-                        'main_category' => 'text',
-                        'ext_category'  => 'text',
+                        'name'               => 'text',
+                        'main_category'      => 'text',
+                        'ext_category'       => 'text',
+                        'seller.seller_name' => 'text',
                     ],
                     'products_full_text',
                     null,
                     [
                         'weights'          => [
-                            'name'          => 32,
-                            'ext_category'  => 8,
-                            'main_category' => 16,
+                            'name'               => 32,
+                            'ext_category'       => 8,
+                            'main_category'      => 16,
+                            'seller.seller_name' => 256,
                         ],
                         'default_language' => 'russian',
                         'name'             => 'recipe_full_text',
