@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ImportJob;
-use Exception;
-use Illuminate\Routing\Controller;
 use Log;
+use Exception;
+use App\Jobs\ImportJob;
+use Illuminate\Routing\Controller;
 
 class ImportController extends Controller
 {
