@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\NameRequest;
-use App\Http\Requests\SellerRequest;
 use App\Product;
 use Illuminate\Routing\Controller;
 
@@ -16,19 +15,6 @@ class ProductController extends Controller
         if (isset($products['error']) && $products['error'] === true) {
             return response()->json($products, $products['code']);
         }
-
-        return response()->json($products);
-    }
-
-    public function costBySeller(SellerRequest $request)
-    {
-        $products = Product::findSellerCost(
-            $request->name,
-            $request->seller_name,
-            $request->page,
-            $request->per_page,
-            $request->sorted
-        );
 
         return response()->json($products);
     }
