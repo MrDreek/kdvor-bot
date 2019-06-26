@@ -1,3 +1,7 @@
+[![StyleCI](https://github.styleci.io/repos/158385774/shield?branch=master)](https://github.styleci.io/repos/158385774)
+
+---
+
 ## Порядок деплоя
 
 **_git clone git@github.com:MrDreek/kdvor-bot.git_**

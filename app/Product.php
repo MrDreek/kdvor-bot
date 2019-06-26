@@ -2,29 +2,32 @@
 
 namespace App;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use App\Http\Resources\Product as ProductResource;
 use App\Http\Resources\ProductCollection;
 
 /**
- * App\Product
+ * App\Product.
  *
- * @property string      name
- * @property string      desc
- * @property string      detail
- * @property string      price
- * @property string      ext_offer_url
+ * @property string name
+ * @property string desc
+ * @property string detail
+ * @property string price
+ * @property string ext_offer_url
  * @property string|null main_category
  * @property string|null ext_category
- * @property array       seller
- * @property-read mixed  $id
- * @property mixed       message_id
- * @property string      short_link
- * @property string      keyword
- * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product query()
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereFullText($search, $sorted, $page = 1, $limit = 4)
- * @mixin \Eloquent
+ * @property array seller
+ * @property-read mixed $id
+ * @property mixed message_id
+ * @property string short_link
+ * @property string keyword
+ *
+ * @method static Builder|Product newModelQuery()
+ * @method static Builder|Product newQuery()
+ * @method static Builder|Product query()
+ * @method static Builder|Product whereFullText($search, $sorted, $page = 1, $limit = 4)
+ * @mixin Eloquent
  */
 class Product extends BaseModel
 {
@@ -36,8 +39,8 @@ class Product extends BaseModel
      * @param     $query
      * @param     $search
      * @param     $sorted
-     * @param int $page
-     * @param int $limit
+     * @param  int  $page
+     * @param  int  $limit
      *
      * @return mixed
      */
@@ -52,6 +55,7 @@ class Product extends BaseModel
         $query->orderBy('score', ['$meta' => 'textScore']);
         $query->skip(($page - 1) * $limit);
         $query->take($limit);
+
         return $query->whereRaw(['$text' => ['$search' => $search]]);
     }
 
@@ -76,7 +80,18 @@ class Product extends BaseModel
      */
     public static function findCost($name, $page, $perPage, $sorted)
     {
-        $products = self::select(['name', 'desc', 'detail', 'price', 'main_category', 'ext_category', 'seller', 'ext_offer_url', 'message_id', 'keyword'])
+        $products = self::select([
+            'name',
+            'desc',
+            'detail',
+            'price',
+            'main_category',
+            'ext_category',
+            'seller',
+            'ext_offer_url',
+            'message_id',
+            'keyword'
+        ])
             ->whereFullText($name, $sorted, $page ?? 1, $perPage ?? 4)
             ->get();
 
@@ -91,14 +106,14 @@ class Product extends BaseModel
                 ],
                 [
                     '$group' => [
-                        '_id' => '$referenceField',
+                        '_id'   => '$referenceField',
                         'count' => [
                             '$sum' => 1,
                         ],
-                        'min' => [
+                        'min'   => [
                             '$min' => '$price',
                         ],
-                        'max' => [
+                        'max'   => [
                             '$max' => '$price',
                         ],
 
@@ -168,9 +183,9 @@ class Product extends BaseModel
     public function getLink(): string
     {
         if (!empty($this->keyword)) {
-            return self::BASE_URL . $this->seller['url'] . $this->keyword . '/';
+            return self::BASE_URL.$this->seller['url'].$this->keyword.'/';
         }
 
-        return self::BASE_URL . $this->seller['url'] . $this->message_id . '/';
+        return self::BASE_URL.$this->seller['url'].$this->message_id.'/';
     }
 }
