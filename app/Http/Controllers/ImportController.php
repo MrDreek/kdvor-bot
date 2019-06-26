@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Log;
-use Exception;
 use App\Jobs\ImportJob;
+use Exception;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Log;
 
 class ImportController extends Controller
 {
+    use DispatchesJobs;
+
     public function index(): array
     {
         try {
-            dispatch(new ImportJob());
+            $this->dispatch(new ImportJob());
         } catch (Exception $e) {
             Log::error('error new job. '.json_encode($e, JSON_UNESCAPED_UNICODE));
         }
