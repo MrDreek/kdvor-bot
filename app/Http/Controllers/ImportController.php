@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ImportJob;
 use Exception;
-use Illuminate\Foundation\Bus\DispatchesJobs;
+use App\Jobs\ImportJob;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class ImportController extends Controller
 {
