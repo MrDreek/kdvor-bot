@@ -2,12 +2,12 @@
 
 namespace App;
 
-use App\Http\Resources\Product as ProductResource;
-use App\Http\Resources\SellerCollection;
-use App\Http\Resources\SellerProductCollection;
-use App\Http\Resources\SellerResource;
 use Eloquent;
+use App\Http\Resources\SellerResource;
+use App\Http\Resources\SellerCollection;
 use Illuminate\Database\Eloquent\Builder;
+use App\Http\Resources\SellerProductCollection;
+use App\Http\Resources\Product as ProductResource;
 
 /**
  * App\Product.
@@ -194,12 +194,12 @@ class Product extends BaseModel
     public static function findSellerCost(string $name, string $seller_name, $page = 1, $perPage = 4, $sorted = null)
     {
         $seller = self::select([
-            'seller.seller_name'
+            'seller.seller_name',
         ])
             ->whereFullText($seller_name, true)
             ->first();
 
-        if(!$seller){
+        if (! $seller) {
             return ['data' => 'Провавец не найден, попробуйте другой запрос', 'error' => true, 'code' => 404];
         }
 
@@ -273,7 +273,7 @@ class Product extends BaseModel
      */
     public function getLink(): string
     {
-        if (!empty($this->keyword)) {
+        if (! empty($this->keyword)) {
             return self::BASE_URL.$this->seller['url'].$this->keyword.'/';
         }
 
