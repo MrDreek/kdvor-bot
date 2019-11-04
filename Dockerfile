@@ -31,5 +31,7 @@ WORKDIR /app
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 COPY --chown=www-data:www-data . /app
 COPY --chown=www-data:www-data --from=composer /app/vendor/ /app/vendor/
+RUN mkdir ./app/storage && chown www-data ./app/storage
+COPY ./custom.ini /usr/local/etc/php/conf.d
 
 ENTRYPOINT ["/bin/bash","/app/php-fpm-entrypoint.sh"]
