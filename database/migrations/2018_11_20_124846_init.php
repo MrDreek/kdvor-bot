@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 use Jenssegers\Mongodb\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 
 class Init extends Migration
 {
@@ -42,6 +42,8 @@ class Init extends Migration
      */
     public function down()
     {
-        //
+        Schema::connection('mongodb')->table('products_collection', function (Blueprint $collection) {
+            $collection->dropIndex(['recipe_full_text']);
+        });
     }
 }

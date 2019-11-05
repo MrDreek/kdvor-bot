@@ -2,20 +2,20 @@
 
 namespace App\Jobs;
 
-use Exception;
-use App\Product;
-use App\MySql\Seller;
 use App\MySql\Category;
 use App\MySql\MainCategory;
-use Illuminate\Bus\Queueable;
 use App\MySql\Product as MyProduct;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Queue\InteractsWithQueue;
-use Jenssegers\Mongodb\Schema\Blueprint;
+use App\MySql\Seller;
+use App\Product;
+use Exception;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
+use Jenssegers\Mongodb\Schema\Blueprint;
 
 class ImportJob implements ShouldQueue
 {
@@ -58,6 +58,7 @@ class ImportJob implements ShouldQueue
         $categories = Category::get([
             'ext_category_name',
             'ext_category_id',
+            'ext_category_parent_id',
             'Subdivision_ID',
         ])->keyBy('ext_category_id')->toArray();
         $main_categories = MainCategory::get([
