@@ -2,12 +2,12 @@
 
 namespace App;
 
-use Eloquent;
-use App\Http\Resources\SellerResource;
-use App\Http\Resources\SellerCollection;
-use Illuminate\Database\Eloquent\Builder;
-use App\Http\Resources\SellerProductCollection;
 use App\Http\Resources\Product as ProductResource;
+use App\Http\Resources\SellerCollection;
+use App\Http\Resources\SellerProductCollection;
+use App\Http\Resources\SellerResource;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * App\Product.

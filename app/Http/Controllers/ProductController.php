@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
 use App\Http\Requests\NameRequest;
-use Illuminate\Routing\Controller;
 use App\Http\Requests\SellerRequest;
+use App\Product;
+use Illuminate\Routing\Controller;
 
 class ProductController extends Controller
 {

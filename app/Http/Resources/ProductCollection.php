@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\SimpleProduct as ProductResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Http\Resources\SimpleProduct as ProductResource;
 
 class ProductCollection extends ResourceCollection
 {
