@@ -21,6 +21,9 @@ class ImportJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /** @var array */
+    private $categories;
+
     /**
      * Create a new job instance.
      *
@@ -55,12 +58,14 @@ class ImportJob implements ShouldQueue
             ->where('checked', 1)
             ->get()
             ->toArray();
-        $categories = Category::get([
+        $this->categories = Category::get([
             'ext_category_name',
             'ext_category_id',
             'ext_category_parent_id',
             'Subdivision_ID',
-        ])->keyBy('ext_category_id')->toArray();
+        ])
+//            ->keyBy('ext_category_id')
+            ->toArray();
         $main_categories = MainCategory::get([
             'Subdivision_ID',
             'Subdivision_Name',
@@ -86,24 +91,28 @@ class ImportJob implements ShouldQueue
             $item->keyword = $product['Keyword'];
             $item->ext_offer_url = $product['ext_offer_url'];
 
-            $ext_category = array_filter($categories, static function ($item) use ($product) {
-                return $item['ext_category_id'] === $product['ext_category_id'] && $item['Subdivision_ID'] === $product['Subdivision_ID'];
-            }, ARRAY_FILTER_USE_BOTH);
-
-            $item->ext_category = array_values($ext_category)[0]['ext_category_name'] ?? null;
+            $productCategory = null;
+            foreach ($this->categories as $category) {
+                if ($category['ext_category_id'] === $product['ext_category_id'] && $category['Subdivision_ID'] === $product['Subdivision_ID']) {
+                    $productCategory = $category;
+                    break;
+                }
+            }
+            $ext_category = $this->buildCatTree($productCategory);
+            $item->ext_category = array_pluck($ext_category, 'ext_category_name'); // ?? https://docs.mongodb.com/manual/tutorial/model-tree-structures-with-ancestors-array/
             $item->main_category = $main_categories[$product['int_category_id']]['Subdivision_Name'] ?? null;
             $item->seller = [
                 'seller_name' => $sellers[$product['Subdivision_ID']]['Subdivision_Name'],
-                'phone'       => $sellers[$product['Subdivision_ID']]['phone'],
-                'email'       => $sellers[$product['Subdivision_ID']]['email'],
-                'url'         => $sellers[$product['Subdivision_ID']]['Hidden_URL'],
-                'site'        => $sellers[$product['Subdivision_ID']]['site'],
+                'phone' => $sellers[$product['Subdivision_ID']]['phone'],
+                'email' => $sellers[$product['Subdivision_ID']]['email'],
+                'url' => $sellers[$product['Subdivision_ID']]['Hidden_URL'],
+                'site' => $sellers[$product['Subdivision_ID']]['site'],
             ];
 
             try {
                 $item->save();
             } catch (Exception $e) {
-                Log::error('Ошибка сохранения! item: '.json_encode($item));
+                Log::error('Ошибка сохранения! item: ' . json_encode($item));
             }
         }
 
@@ -111,29 +120,46 @@ class ImportJob implements ShouldQueue
             Schema::connection('mongodb')->table('products_collection', static function (Blueprint $collection) {
                 $collection->index(
                     [
-                        'name'               => 'text',
-                        'main_category'      => 'text',
-                        'ext_category'       => 'text',
+                        'name' => 'text',
+                        'main_category' => 'text',
+                        'ext_category' => 'text',
                         'seller.seller_name' => 'text',
                     ],
                     'products_full_text',
                     null,
                     [
-                        'weights'          => [
-                            'name'               => 32,
-                            'ext_category'       => 8,
-                            'main_category'      => 16,
+                        'weights' => [
+                            'name' => 32,
+                            'ext_category' => 8,
+                            'main_category' => 16,
                             'seller.seller_name' => 256,
                         ],
                         'default_language' => 'russian',
-                        'name'             => 'recipe_full_text',
+                        'name' => 'recipe_full_text',
                     ]
                 );
             });
         } catch (Exception $e) {
-            Log::error('Ошибка создания текстового индекса'.json_encode(['inner_message' => $e->getMessage()]));
+            Log::error('Ошибка создания текстового индекса' . json_encode(['inner_message' => $e->getMessage()]));
         }
 
         Log::notice('Конец импорта данных из mysql');
+    }
+
+    private function buildCatTree($pCategory)
+    {
+        $categoryOut = [];
+        $lastCategoryParentId = $pCategory['ext_category_parent_id'] ?? null;
+        if ($lastCategoryParentId) {
+            foreach ($this->categories as $category) {
+                if ($category['ext_category_id'] === $lastCategoryParentId && $category['Subdivision_ID'] === $pCategory['Subdivision_ID']) {
+                    $categoryOut = array_merge($categoryOut, $this->buildCatTree($category));
+                    break;
+                }
+            }
+        }
+        $categoryOut[] = $pCategory;
+
+        return $categoryOut;
     }
 }

@@ -9,7 +9,6 @@ services:
         depends_on:
             - php
         volumes:
-            - ./:/app
             - ./nginx.conf:/etc/nginx/nginx.conf
     php:
         build:
@@ -22,6 +21,8 @@ services:
         depends_on:
             - mongo
             - mysql
+        volumes:
+          - ./:/app
     mongo:
         image: mongo:4
         restart: always
