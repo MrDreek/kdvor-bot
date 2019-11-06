@@ -2,12 +2,12 @@
 
 namespace App;
 
-use Eloquent;
-use App\Http\Resources\SellerResource;
-use App\Http\Resources\SellerCollection;
-use Illuminate\Database\Eloquent\Builder;
-use App\Http\Resources\SellerProductCollection;
 use App\Http\Resources\Product as ProductResource;
+use App\Http\Resources\SellerCollection;
+use App\Http\Resources\SellerProductCollection;
+use App\Http\Resources\SellerResource;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * App\Product.
@@ -18,7 +18,8 @@ use App\Http\Resources\Product as ProductResource;
  * @property string price
  * @property string ext_offer_url
  * @property string|null main_category
- * @property string|null ext_category
+ * @property array ext_category
+ * @property string|null ext_category_parent
  * @property array seller
  * @property-read mixed $id
  * @property mixed message_id

@@ -43,7 +43,7 @@ class Init extends Migration
     public function down()
     {
         Schema::connection('mongodb')->table('products_collection', function (Blueprint $collection) {
-            $collection->dropIndex(['recipe_full_text']);
+            $collection->dropIndex('products_full_text');
         });
     }
 }

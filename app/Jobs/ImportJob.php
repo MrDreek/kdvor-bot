@@ -98,8 +98,10 @@ class ImportJob implements ShouldQueue
                     break;
                 }
             }
-            $ext_category = $this->buildCatTree($productCategory);
-            $item->ext_category = array_pluck($ext_category, 'ext_category_name'); // ?? https://docs.mongodb.com/manual/tutorial/model-tree-structures-with-ancestors-array/
+            $extCategory = $this->buildCatTree($productCategory);
+            $extCategoryNames = array_pluck($extCategory, 'ext_category_name');
+            $item->ext_category = $extCategoryNames;
+            $item->ext_category_parent = $this->getParentCategory($extCategoryNames);
             $item->main_category = $main_categories[$product['int_category_id']]['Subdivision_Name'] ?? null;
             $item->seller = [
                 'seller_name' => $sellers[$product['Subdivision_ID']]['Subdivision_Name'],
@@ -118,21 +120,20 @@ class ImportJob implements ShouldQueue
 
         try {
             Schema::connection('mongodb')->table('products_collection', static function (Blueprint $collection) {
+                $collection->dropIndex('products_full_text');
                 $collection->index(
                     [
-                        'name' => 'text',
                         'main_category' => 'text',
                         'ext_category' => 'text',
-                        'seller.seller_name' => 'text',
+                        'ext_category_parent' => 'text',
                     ],
                     'products_full_text',
                     null,
                     [
                         'weights' => [
-                            'name' => 32,
-                            'ext_category' => 8,
                             'main_category' => 16,
-                            'seller.seller_name' => 256,
+                            'ext_category' => 8,
+                            'ext_category_parent' => 4,
                         ],
                         'default_language' => 'russian',
                         'name' => 'recipe_full_text',
@@ -146,7 +147,7 @@ class ImportJob implements ShouldQueue
         Log::notice('Конец импорта данных из mysql');
     }
 
-    private function buildCatTree($pCategory)
+    private function buildCatTree(array $pCategory): array
     {
         $categoryOut = [];
         $lastCategoryParentId = $pCategory['ext_category_parent_id'] ?? null;
@@ -161,5 +162,10 @@ class ImportJob implements ShouldQueue
         $categoryOut[] = $pCategory;
 
         return $categoryOut;
+    }
+
+    private function getParentCategory(array $categoryNames): ?string
+    {
+        return !empty($categoryNames) ? last($categoryNames) : null;
     }
 }
