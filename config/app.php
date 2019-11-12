@@ -162,7 +162,6 @@ return [
          */
         Jenssegers\Mongodb\MongodbServiceProvider::class,
         Ixudra\Curl\CurlServiceProvider::class,
-        Mbarwick83\Shorty\ShortyServiceProvider::class,
         Jenssegers\Mongodb\MongodbQueueServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 

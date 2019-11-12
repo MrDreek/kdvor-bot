@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static Builder|Product newQuery()
  * @method static Builder|Product query()
  * @mixin Eloquent
- *
  * @property int $Message_ID
  * @property int $User_ID
  * @property int $Subdivision_ID
@@ -53,7 +52,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string|null $Size
  * @property string|null $Country_of_origin
  * @property int|null $int_category_id
- *
  * @method static Builder|Product whereBigImage($value)
  * @method static Builder|Product whereChecked($value)
  * @method static Builder|Product whereColor($value)

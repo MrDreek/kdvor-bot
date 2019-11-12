@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static Builder|Seller newQuery()
  * @method static Builder|Seller query()
  * @mixin Eloquent
- *
  * @property int $Subdivision_ID
  * @property int $Catalogue_ID
  * @property int $Parent_Sub_ID
@@ -63,7 +62,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @property int|null $inn
  * @property float|null $Latitude
  * @property float|null $Longitude
- *
  * @method static Builder|Seller whereCacheAccessID($value)
  * @method static Builder|Seller whereCacheLifetime($value)
  * @method static Builder|Seller whereCatalogueID($value)
@@ -113,6 +111,18 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static Builder|Seller whereWriteAccessID($value)
  * @method static Builder|Seller whereZId($value)
  * @method static Builder|Seller whereZParentId($value)
+ * @property int|null $alloffersamount
+ * @property string|null $SEOH1
+ * @property string|null $seotext
+ * @property string|null $shopname
+ * @property string|null $site2
+ * @property string|null $site3
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\MySql\Seller whereAlloffersamount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\MySql\Seller whereSEOH1($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\MySql\Seller whereSeotext($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\MySql\Seller whereShopname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\MySql\Seller whereSite2($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\MySql\Seller whereSite3($value)
  */
 class Seller extends Model
 {

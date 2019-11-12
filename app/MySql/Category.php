@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static Builder|Category newQuery()
  * @method static Builder|Category query()
  * @mixin Eloquent
- *
  * @property int $Message_ID
  * @property int $User_ID
  * @property int $Subdivision_ID
@@ -39,7 +38,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @property int $ext_category_id
  * @property int|null $ext_category_parent_id
  * @property int|null $int_category_id
- *
  * @method static Builder|Category whereChecked($value)
  * @method static Builder|Category whereCreated($value)
  * @method static Builder|Category whereExtCategoryId($value)

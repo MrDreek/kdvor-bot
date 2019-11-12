@@ -121,6 +121,7 @@ class ImportJob implements ShouldQueue
         try {
             Schema::connection('mongodb')->table('products_collection', static function (Blueprint $collection) {
                 $collection->dropIndex('products_full_text');
+                // db.products_collection.ensureIndex( {main_category: "text",ext_category: "text", ext_category_parent: "text"},{weights: { main_category: 16, ext_category: 8, ext_category_parent: 4}, name: "recipe_full_text", default_language: "russian"})
                 $collection->index(
                     [
                         'main_category' => 'text',
@@ -147,7 +148,7 @@ class ImportJob implements ShouldQueue
         Log::notice('Конец импорта данных из mysql');
     }
 
-    private function buildCatTree(array $pCategory): array
+    private function buildCatTree(?array $pCategory): array
     {
         $categoryOut = [];
         $lastCategoryParentId = $pCategory['ext_category_parent_id'] ?? null;

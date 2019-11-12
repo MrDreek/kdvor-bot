@@ -1,7 +1,7 @@
 FROM composer:1.9 AS composer
 
 COPY composer.* ./
-
+RUN composer global require hirak/prestissimo
 RUN composer install \
     --ignore-platform-reqs \
     --no-interaction \

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-#composer install
+composer install
 
 cat .env
 ./artisan optimize:clear

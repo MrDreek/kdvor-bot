@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GroupRequest;
 use App\Product;
 use App\Http\Requests\NameRequest;
 use Illuminate\Routing\Controller;
@@ -43,6 +44,13 @@ class ProductController extends Controller
     public function dearest(NameRequest $request)
     {
         $products = Product::findHighCost($request->name);
+
+        return response()->json($products);
+    }
+
+    public function byGroup(GroupRequest $request)
+    {
+        $products = Product::findHighCost($request->group);
 
         return response()->json($products);
     }

@@ -18,4 +18,5 @@ Route::prefix('product')->group(static function () {
     Route::post('cheapest', 'ProductController@cheapest')->name('cheapest');
     Route::post('dearest', 'ProductController@dearest')->name('dearest');
     Route::post('cost-by-seller', 'ProductController@costBySeller')->name('cost-by-seller');
+    Route::get('by-group', 'ProductController@byGroup')->name('by-group');
 });

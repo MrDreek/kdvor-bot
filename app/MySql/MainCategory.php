@@ -58,7 +58,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @property int|null $inn
  * @property float|null $Latitude
  * @property float|null $Longitude
- *
  * @method static Builder|MainCategory newModelQuery()
  * @method static Builder|MainCategory newQuery()
  * @method static Builder|MainCategory query()
@@ -112,6 +111,18 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static Builder|MainCategory whereZId($value)
  * @method static Builder|MainCategory whereZParentId($value)
  * @mixin Eloquent
+ * @property int|null $alloffersamount
+ * @property string|null $SEOH1
+ * @property string|null $seotext
+ * @property string|null $shopname
+ * @property string|null $site2
+ * @property string|null $site3
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\MySql\MainCategory whereAlloffersamount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\MySql\MainCategory whereSEOH1($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\MySql\MainCategory whereSeotext($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\MySql\MainCategory whereShopname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\MySql\MainCategory whereSite2($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\MySql\MainCategory whereSite3($value)
  */
 class MainCategory extends Model
 {
