@@ -2,11 +2,12 @@
 
 namespace App\Jobs;
 
+use App\CategoryCollection;
 use App\MySql\Category;
 use App\MySql\MainCategory;
 use App\MySql\Product as MyProduct;
 use App\MySql\Seller;
-use App\Product;
+use App\ProductCollection;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -41,7 +42,7 @@ class ImportJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Product::truncate();
+        ProductCollection::truncate();
         $products = MyProduct::select([
             'checked',
             'Keyword',
@@ -63,9 +64,8 @@ class ImportJob implements ShouldQueue
             'ext_category_id',
             'ext_category_parent_id',
             'Subdivision_ID',
-        ])
-//            ->keyBy('ext_category_id')
-            ->toArray();
+        ])->toArray();
+        $this->handleCategories();
         $main_categories = MainCategory::get([
             'Subdivision_ID',
             'Subdivision_Name',
@@ -82,7 +82,7 @@ class ImportJob implements ShouldQueue
         ])->where('Parent_Sub_ID', Seller::PARENT_SUB_ID)->keyBy('Subdivision_ID')->toArray();
 
         foreach ($products as $product) {
-            $item = new Product();
+            $item = new ProductCollection();
             $item->name = $product['Name'];
             $item->message_id = $product['Message_ID'];
             $item->desc = str_replace(["\t", "\n"], '', $product['Description']);
@@ -121,7 +121,6 @@ class ImportJob implements ShouldQueue
         try {
             Schema::connection('mongodb')->table('products_collection', static function (Blueprint $collection) {
                 $collection->dropIndex('products_full_text');
-                // db.products_collection.ensureIndex( {main_category: "text",ext_category: "text", ext_category_parent: "text"},{weights: { main_category: 16, ext_category: 8, ext_category_parent: 4}, name: "recipe_full_text", default_language: "russian"})
                 $collection->index(
                     [
                         'main_category' => 'text',
@@ -146,6 +145,23 @@ class ImportJob implements ShouldQueue
         }
 
         Log::notice('Конец импорта данных из mysql');
+    }
+
+    private function handleCategories()
+    {
+        CategoryCollection::truncate();
+        foreach ($this->categories as $category) {
+            $parent = $category['ext_category_parent_id']
+                ? Category::where([
+                    'ext_category_id' => $category['ext_category_parent_id'],
+                    'Subdivision_ID' => $category['Subdivision_ID']
+                ])->first() : null;
+            $categoryCollection = new CategoryCollection();
+            $categoryCollection->id = $category['ext_category_id'];
+            $categoryCollection->name = $category['ext_category_name'];
+            $categoryCollection->parent_name = $parent ? $parent->ext_category_name : null;
+            $categoryCollection->save();
+        }
     }
 
     private function buildCatTree(?array $pCategory): array

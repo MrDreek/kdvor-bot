@@ -26,13 +26,13 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string short_link
  * @property string keyword
  *
- * @method static Builder|Product newModelQuery()
- * @method static Builder|Product newQuery()
- * @method static Builder|Product query()
- * @method static Builder|Product whereFullText($search, $sorted, $page = 1, $limit = 4)
+ * @method static Builder|ProductCollection newModelQuery()
+ * @method static Builder|ProductCollection newQuery()
+ * @method static Builder|ProductCollection query()
+ * @method static Builder|ProductCollection whereFullText($search, $sorted, $page = 1, $limit = 4)
  * @mixin Eloquent
  */
-class Product extends BaseModel
+class ProductCollection extends BaseModel
 {
     protected $collection = 'products_collection';
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GroupRequest;
-use App\Product;
+use App\ProductCollection;
 use App\Http\Requests\NameRequest;
 use Illuminate\Routing\Controller;
 use App\Http\Requests\SellerRequest;
@@ -12,7 +12,7 @@ class ProductController extends Controller
 {
     public function cost(NameRequest $request)
     {
-        $products = Product::findCost($request->name, $request->page, $request->per_page, $request->sorted);
+        $products = ProductCollection::findCost($request->name, $request->page, $request->per_page, $request->sorted);
 
         if (isset($products['error']) && $products['error'] === true) {
             return response()->json($products, $products['code']);
@@ -23,7 +23,7 @@ class ProductController extends Controller
 
     public function costBySeller(SellerRequest $request)
     {
-        $products = Product::findSellerCost(
+        $products = ProductCollection::findSellerCost(
             $request->name,
             $request->seller_name,
             $request->page,
@@ -36,21 +36,21 @@ class ProductController extends Controller
 
     public function cheapest(NameRequest $request)
     {
-        $products = Product::findLowCost($request->name);
+        $products = ProductCollection::findLowCost($request->name);
 
         return response()->json($products);
     }
 
     public function dearest(NameRequest $request)
     {
-        $products = Product::findHighCost($request->name);
+        $products = ProductCollection::findHighCost($request->name);
 
         return response()->json($products);
     }
 
     public function byGroup(GroupRequest $request)
     {
-        $products = Product::findHighCost($request->group);
+        $products = ProductCollection::findHighCost($request->group);
 
         return response()->json($products);
     }
